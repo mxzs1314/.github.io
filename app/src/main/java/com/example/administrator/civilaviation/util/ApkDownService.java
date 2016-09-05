@@ -73,6 +73,7 @@ public class ApkDownService extends Service {
     private void installApk(File file, Context context) {
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
+//        intent.setAction(Intent.ACTION_VIEW);
         intent.setData(Uri.fromFile(file));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
