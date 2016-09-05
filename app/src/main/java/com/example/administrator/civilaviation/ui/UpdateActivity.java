@@ -17,25 +17,19 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.administrator.civilaviation.R;
+import com.example.administrator.civilaviation.util.ApkDownService;
+import com.example.administrator.civilaviation.util.GetServerUrl;
 import com.example.administrator.civilaviation.util.UpdateInfo;
 import com.example.administrator.civilaviation.util.UpdateInfoService;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HttpContext;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -76,6 +70,8 @@ public class UpdateActivity extends Activity{
             // 如果有更新就提示
             if (isNeedUpdate()) {
                 showUpdateDialog();
+            } else {
+                Toast.makeText(UpdateActivity.this, "当前是最新版本", Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -92,7 +88,11 @@ public class UpdateActivity extends Activity{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                    downFile(info.getUrl());
+//                    downFile(info.getUrl());
+                    Intent intent = new Intent(UpdateActivity.this, ApkDownService.class);
+                    intent.putExtra("apkUrl", info.getUrl());
+                    startService(intent);
+                    Log.d("url", GetServerUrl.getApk_url());
                 } else {
                     Toast.makeText(UpdateActivity.this, "SD卡不可用", Toast.LENGTH_LONG).show();
                 }
@@ -110,11 +110,11 @@ public class UpdateActivity extends Activity{
 
     private boolean isNeedUpdate() {
         // 获取最新版本号
-        String v = info.getVersion();
-        Log.d("version", v);
-        Toast.makeText(UpdateActivity.this, v, Toast.LENGTH_LONG).show();
+        String newVersion = info.getVersion();
+        Log.d("version", newVersion);
 
-        if (v.equals(getVersion())) {
+        // 比较新版本和旧版本值是否相等
+        if (newVersion.equals(getVersion())) {
             return false;
         } else {
             return true;
@@ -126,7 +126,8 @@ public class UpdateActivity extends Activity{
         try {
             PackageManager packageManager = getPackageManager();
             PackageInfo packageInfo = packageManager.getPackageInfo(getPackageName(), 0);
-            return packageInfo.versionName;
+            String oldVersion = packageInfo.versionName;
+            return oldVersion;
         } catch (Exception e) {
             e.printStackTrace();
             return "版本号未知";
@@ -146,27 +147,7 @@ public class UpdateActivity extends Activity{
             @Override
             public void run() {
                 super.run();
-                HttpClient client = new CloseableHttpClient() {
-                    @Override
-                    protected CloseableHttpResponse doExecute(HttpHost target, HttpRequest request, HttpContext context) throws IOException, ClientProtocolException {
-                        return null;
-                    }
-
-                    @Override
-                    public void close() throws IOException {
-
-                    }
-
-                    @Override
-                    public HttpParams getParams() {
-                        return null;
-                    }
-
-                    @Override
-                    public ClientConnectionManager getConnectionManager() {
-                        return null;
-                    }
-                };
+                HttpClient client = new DefaultHttpClient();
                 HttpGet get = new HttpGet(url);
                 HttpResponse response;
                 try {
@@ -181,12 +162,12 @@ public class UpdateActivity extends Activity{
                     InputStream is = entity.getContent();
                     FileOutputStream fileOutputStream = null;
                     if (is != null) {
-                        File file = new File(Environment.getExternalStorageDirectory(), "Test.apk");
+                        File file = new File(Environment.getExternalStorageDirectory(), "app-release.apk");
                         fileOutputStream = new FileOutputStream(file);
 
                         //这个是缓冲区，即一次读取10个比特，我弄的小了点，
                         // 因为在本地，所以数值太大一 下就下载完了，看不出progressbar的效果。
-                        byte[] buf = new byte[10];
+                        byte[] buf = new byte[1024];
                         int ch = -1;
                         int process = 0;
                         while ((ch = is.read(buf)) != -1) {
@@ -219,9 +200,10 @@ public class UpdateActivity extends Activity{
         });
     }
 
+    // 安装文件，一般固定写法
     void update() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "Test.apk")),
+        intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "app-release.apk")),
                 "application/vnd.android.package-archive");
         startActivity(intent);
     }

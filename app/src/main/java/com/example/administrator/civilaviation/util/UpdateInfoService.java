@@ -1,8 +1,10 @@
 package com.example.administrator.civilaviation.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -18,6 +20,7 @@ public class UpdateInfoService {
     public UpdateInfo getUpDateInfo() throws Exception {
         String path = GetServerUrl.getUrl() + "/update.txt";
         StringBuffer sb = new StringBuffer();
+//        StringBuilder sb = new StringBuilder();
         String line = null;
         BufferedReader reader = null;
 
