@@ -197,8 +197,6 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
 //                    Toast.makeText(this, "测试",Toast.LENGTH_LONG).show();
 //                }
 //                SERVER_FLAG++;
-                Intent intent1 = new Intent(LoginActivity.this, HelloWorldActivity.class);
-                startActivity(intent1);
                 break;
 
             case R.id.bt_username_clear:

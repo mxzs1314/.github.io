@@ -47,7 +47,8 @@ public class ApkDownService extends Service {
         request.setMimeType("application/vnd.android.package-archive");
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, getFileName(apkUrl));
+//        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, getFileName(apkUrl));
+        request.setDestinationInExternalPublicDir("feijichang", getFileName(apkUrl));
         downloadId = dm.enqueue(request);
     }
 

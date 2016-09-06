@@ -88,10 +88,12 @@ public class UpdateActivity extends Activity{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-//                    downFile(info.getUrl());
-                    Intent intent = new Intent(UpdateActivity.this, ApkDownService.class);
-                    intent.putExtra("apkUrl", info.getUrl());
-                    startService(intent);
+                    downFile(info.getUrl());
+
+                    // 调用ApkDownService进行下载
+//                    Intent intent = new Intent(UpdateActivity.this, ApkDownService.class);
+//                    intent.putExtra("apkUrl", info.getUrl());
+//                    startService(intent);
                 } else {
                     Toast.makeText(UpdateActivity.this, "SD卡不可用", Toast.LENGTH_LONG).show();
                 }
