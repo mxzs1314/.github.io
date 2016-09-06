@@ -92,7 +92,6 @@ public class UpdateActivity extends Activity{
                     Intent intent = new Intent(UpdateActivity.this, ApkDownService.class);
                     intent.putExtra("apkUrl", info.getUrl());
                     startService(intent);
-                    Log.d("url", GetServerUrl.getApk_url());
                 } else {
                     Toast.makeText(UpdateActivity.this, "SD卡不可用", Toast.LENGTH_LONG).show();
                 }

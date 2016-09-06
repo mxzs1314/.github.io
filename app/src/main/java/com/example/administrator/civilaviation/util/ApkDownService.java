@@ -12,8 +12,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
-import com.example.administrator.civilaviation.ui.UpdateActivity;
-
 import java.io.File;
 
 /**
