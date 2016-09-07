@@ -32,4 +32,9 @@ public class NetMgr {
         return wifiNetInfo != null && wifiNetInfo.isConnected();
     }
 
+    // 判断手机网络是否开启(在wifi已连接的情况下也可以使用)
+//    public boolean isNetConnect() {
+//        ConnectivityManager connectivityManager
+//    }
+
 }
