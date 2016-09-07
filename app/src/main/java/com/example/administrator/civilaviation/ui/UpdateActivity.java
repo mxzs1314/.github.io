@@ -17,9 +17,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.administrator.civilaviation.R;
-import com.example.administrator.civilaviation.sys.NetMgr;
-import com.example.administrator.civilaviation.util.ApkDownService;
-import com.example.administrator.civilaviation.util.GetServerUrl;
 import com.example.administrator.civilaviation.util.UpdateInfo;
 import com.example.administrator.civilaviation.util.UpdateInfoService;
 
@@ -69,16 +66,11 @@ public class UpdateActivity extends Activity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (NetMgr.getInstance().isWifiConnected(UpdateActivity.this)) {
-                // 如果有更新就提示
                 if (isNeedUpdate()) {
                     showUpdateDialog();
                 } else {
                     Toast.makeText(UpdateActivity.this, "当前是最新版本", Toast.LENGTH_LONG).show();
                 }
-            } else {
-                Toast.makeText(UpdateActivity.this, "请检查您的网络是否可用", Toast.LENGTH_LONG).show();
-            }
         }
     };
 
@@ -93,7 +85,6 @@ public class UpdateActivity extends Activity {
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (NetMgr.getInstance().isWifiConnected(UpdateActivity.this)) {
                     if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                         downFile(info.getUrl());
 
@@ -104,10 +95,6 @@ public class UpdateActivity extends Activity {
                     } else {
                         Toast.makeText(UpdateActivity.this, "SD卡不可用", Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    Toast.makeText(UpdateActivity.this, "请检查您的无线网是否开启", Toast.LENGTH_LONG).show();
-                }
-
             }
         });
 
