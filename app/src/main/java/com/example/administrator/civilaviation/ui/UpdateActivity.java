@@ -36,7 +36,7 @@ import java.io.InputStream;
 /**
  * 版本更新activity
  */
-public class UpdateActivity extends Activity{
+public class UpdateActivity extends Activity {
     // 更新版本信息要用到的基本信息
     private UpdateInfo info;
     private ProgressDialog pBar;
@@ -49,7 +49,7 @@ public class UpdateActivity extends Activity{
         Toast.makeText(UpdateActivity.this, "正在检查版本更新", Toast.LENGTH_LONG).show();
 
         // 自动检查有没有新版本，如果有新版本就提示更新
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 super.run();
@@ -63,16 +63,21 @@ public class UpdateActivity extends Activity{
             }
         }.start();
     }
+
     @SuppressLint("HandlerLeak")
     private Handler handler1 = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            // 如果有更新就提示
-            if (isNeedUpdate()) {
-                showUpdateDialog();
+            if (NetMgr.getInstance().isWifiConnected(UpdateActivity.this)) {
+                // 如果有更新就提示
+                if (isNeedUpdate()) {
+                    showUpdateDialog();
+                } else {
+                    Toast.makeText(UpdateActivity.this, "当前是最新版本", Toast.LENGTH_LONG).show();
+                }
             } else {
-                Toast.makeText(UpdateActivity.this, "当前是最新版本", Toast.LENGTH_LONG).show();
+                Toast.makeText(UpdateActivity.this, "请检查您的网络是否可用", Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -161,7 +166,7 @@ public class UpdateActivity extends Activity{
                     response = client.execute(get);
                     HttpEntity entity = response.getEntity();
                     // 获取文件大小
-                    int length = (int)entity.getContentLength();
+                    int length = (int) entity.getContentLength();
 
                     // 设置进度条的总长度
                     pBar.setMax(length);
@@ -189,7 +194,7 @@ public class UpdateActivity extends Activity{
                         fileOutputStream.close();
                     }
                     down();
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
