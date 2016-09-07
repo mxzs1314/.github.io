@@ -48,6 +48,9 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
     private String userName;
     private String userPass;
 
+    // 定义退出标志
+    private long exitTime = 0;
+
     final Handler UiMangerHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -272,5 +275,8 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
         }else {
             return super.onKeyDown(keyCode, event);
         }
+
+
+
     }
 }

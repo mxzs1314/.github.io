@@ -1,5 +1,9 @@
 package com.example.administrator.civilaviation.sys;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 /**
  * 检测手机wifi和数据流量是否开启
  */
@@ -20,6 +24,12 @@ public class NetMgr {
         return instance;
     }
 
-
+    // 判断无线网是否可用
+    public boolean isWifiConnected(Context context) {
+        ConnectivityManager connMgr
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiNetInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        return wifiNetInfo != null && wifiNetInfo.isConnected();
+    }
 
 }

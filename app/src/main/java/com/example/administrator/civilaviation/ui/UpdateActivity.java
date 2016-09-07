@@ -17,6 +17,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.administrator.civilaviation.R;
+import com.example.administrator.civilaviation.sys.NetMgr;
 import com.example.administrator.civilaviation.util.ApkDownService;
 import com.example.administrator.civilaviation.util.GetServerUrl;
 import com.example.administrator.civilaviation.util.UpdateInfo;
@@ -87,16 +88,21 @@ public class UpdateActivity extends Activity{
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                    downFile(info.getUrl());
+                if (NetMgr.getInstance().isWifiConnected(UpdateActivity.this)) {
+                    if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                        downFile(info.getUrl());
 
-                    // 调用ApkDownService进行下载
+                        // 调用ApkDownService进行下载
 //                    Intent intent = new Intent(UpdateActivity.this, ApkDownService.class);
 //                    intent.putExtra("apkUrl", info.getUrl());
 //                    startService(intent);
+                    } else {
+                        Toast.makeText(UpdateActivity.this, "SD卡不可用", Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    Toast.makeText(UpdateActivity.this, "SD卡不可用", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UpdateActivity.this, "请检查您的无线网是否开启", Toast.LENGTH_LONG).show();
                 }
+
             }
         });
 
