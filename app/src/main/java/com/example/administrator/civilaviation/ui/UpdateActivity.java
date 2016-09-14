@@ -17,6 +17,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.administrator.civilaviation.R;
+import com.example.administrator.civilaviation.util.ApkDownService;
 import com.example.administrator.civilaviation.util.UpdateInfo;
 import com.example.administrator.civilaviation.util.UpdateInfoService;
 
@@ -176,10 +177,9 @@ public class UpdateActivity extends Activity {
                             pBar.setProgress(process);
                         }
                     }
+                    assert fileOutputStream != null;
                     fileOutputStream.flush();
-                    if (fileOutputStream != null) {
-                        fileOutputStream.close();
-                    }
+                    fileOutputStream.close();
                     down();
                 } catch (Exception e) {
                     e.printStackTrace();

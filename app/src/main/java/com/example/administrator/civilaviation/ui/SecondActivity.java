@@ -23,7 +23,6 @@ import java.io.IOException;
  * 第二个界面
  */
 public class SecondActivity extends Activity {
-
     // 命名空间
     private final static String NAME_SPACE = "http://58.213.128.132/";
 
@@ -35,12 +34,18 @@ public class SecondActivity extends Activity {
 
     private static final String  TAG = "SecondActivity";
 
-    private String passWorld1;
-    private String passWorld2;
+    // 新密码
+    private String passWorldOne;
+    private String passWorldTwo;
+
+    // 用户名和密码
+    private String userName;
+    private String userPass;
 
     private EditText pass1;
     private EditText pass2;
     private Object requestObj;
+    private  String ErrString = "";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,9 +61,10 @@ public class SecondActivity extends Activity {
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                new changePass().execute();
-//                passWorld1 = pass1.getText().toString().trim();
-//                passWorld2 = pass2.getText().toString().trim();
+                userName = getIntent().getStringExtra("userName");
+                userPass = getIntent().getStringExtra("userPass");
+                passWorldOne = pass1.getText().toString().trim();
+                passWorldTwo = pass2.getText().toString().trim();
 //                Toast.makeText(SecondActivity.this, passWorld1 + passWorld2, Toast.LENGTH_LONG).show();
                 new changePass().execute();
             }
@@ -69,10 +75,10 @@ public class SecondActivity extends Activity {
 
         @Override
         protected void onPostExecute(String request) {
-            if (request.equals("success")) {
-                Toast.makeText(SecondActivity.this, requestObj.toString(), Toast.LENGTH_LONG).show();
+            if (request.equals("success") && !ErrString.equals("")) {
+                Toast.makeText(SecondActivity.this, ErrString, Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(SecondActivity.this, "失败", Toast.LENGTH_LONG).show();
+                Toast.makeText(SecondActivity.this, "修改成功", Toast.LENGTH_LONG).show();
             }
             super.onPostExecute(request);
         }
@@ -80,14 +86,15 @@ public class SecondActivity extends Activity {
         @Override
         protected String doInBackground(Object... params) {
             Log.d(TAG, "doInBackground enter");
+
             // 根据命名空间和方法得到SoapObject对象
             SoapObject soapObject = new SoapObject(NAME_SPACE, METHOD_NAME);
 
             // 传递参数
-            soapObject.addProperty("aHeader", "abc,123");
-            soapObject.addProperty("newPassword1","111111");
-            soapObject.addProperty("newPassword2","111111");
-//            soapObject.addProperty("ErrString", "false");
+            soapObject.addProperty("aHeader", userName + userPass);
+            soapObject.addProperty("newPassword1",passWorldOne);
+            soapObject.addProperty("newPassword2",passWorldTwo);
+            soapObject.addProperty("ErrString", ErrString);
 
             // 通过SOAP1.1协议得到envelop对象
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
@@ -102,8 +109,12 @@ public class SecondActivity extends Activity {
                 httpsSE.call(NAME_SPACE + METHOD_NAME, envelope);
 
                 // 得到远程传回的数据
-                requestObj = envelope.getResponse();
-                Log.d("tag", "++++++++" + requestObj);
+//                requestObj = envelope.getResponse();
+//                if (requestObj.equals(false)) {
+                    SoapObject soapObject1 = (SoapObject) envelope.bodyIn;
+                    ErrString = soapObject1.getProperty("ErrString").toString();
+                    Log.d("tag", "++++++++" + ErrString);
+//                }
 
             } catch (IOException e) {
                 e.printStackTrace();

@@ -160,7 +160,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:singleLine="true"
-            android:text="天气测试"
+            android:text="测试无参"
             android:textSize="20sp"
             android:visibility="visible" />
 

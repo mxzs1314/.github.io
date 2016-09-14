@@ -11,7 +11,10 @@ android {
         versionCode 1
 
         // 需要更新版本请更改下面的值
-        versionName "2.4"
+        versionName "2.3"
+
+        // 打包出现问题
+//        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -30,6 +33,7 @@ android {
          exclude 'META-INF/ASL2.0'
          exclude 'META-INF/notice.txt'
     }
+
 }
 
 dependencies {

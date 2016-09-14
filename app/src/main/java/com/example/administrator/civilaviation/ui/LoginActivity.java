@@ -191,15 +191,13 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
 
             // 注册新用户
             case R.id.register:
-                Intent intent = new Intent(LoginActivity.this, HelloWorldActivity.class);
-                startActivity(intent);
+
                 break;
 
+            // 测试获取不带参数值
             case R.id.registfer:
-//                if (SERVER_FLAG > 10) {
-//                    Toast.makeText(this, "测试",Toast.LENGTH_LONG).show();
-//                }
-//                SERVER_FLAG++;
+                Intent intent = new Intent(LoginActivity.this, HelloWorldActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.bt_username_clear:
@@ -230,8 +228,10 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
     private void login() {
         userName = et_name.getText().toString();
         userPass = et_pass.getText().toString();
-        if (userName.equals("18252543532") && userPass.equals("123456")){
+        if (!userName.equals("") && !userPass.equals("")){
             Intent intent = new Intent(this, SecondActivity.class);
+            intent.putExtra("userName", userName);
+            intent.putExtra("userPass", userPass);
             startActivity(intent);
         } else {
             Toast.makeText(this, "请输入正确的用户名和密码",Toast.LENGTH_LONG).show();
@@ -243,10 +243,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Vie
         // TODO Auto-generated method stub
         switch (v.getId()) {
             case R.id.registfer:
-                if(SERVER_FLAG>9){
 
-                }
-                //   SERVER_FLAG++;
                 break;
         }
         return true;
