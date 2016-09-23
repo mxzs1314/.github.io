@@ -1,1 +1,1 @@
-&2.3&此次版本更新只是测试&https://github.com/mxzs1314/.github.io/raw/master/app/app-release.apk
+&2.2&此次版本更新只是测试&https://github.com/mxzs1314/.github.io/raw/master/app/app-release.apk
