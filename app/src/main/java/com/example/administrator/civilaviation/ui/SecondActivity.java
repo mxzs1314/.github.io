@@ -10,21 +10,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.administrator.civilaviation.R;
-import com.example.administrator.civilaviation.tool.AuthHeaderNKG;
 
 import org.apache.http.conn.util.InetAddressUtils;
 import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.kxml2.kdom.Element;
 import org.kxml2.kdom.Node;
-import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;

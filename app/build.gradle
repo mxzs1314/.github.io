@@ -11,7 +11,7 @@ android {
         versionCode 1
 
         // 需要更新版本请更改下面的值
-        versionName "2.2"
+        versionName "2.3"
 
         // 打包出现问题
 //        multiDexEnabled true
@@ -40,6 +40,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
-    compile files('libs/ksoap2-android-assembly-2.5.2-jar-with-dependencies.jar')
     compile 'com.hynnet:httpclient:4.5.1'
+    compile files('libs/ksoap2-android-assembly-3.0.0-RC.4-jar-with-dependencies.jar')
 }
